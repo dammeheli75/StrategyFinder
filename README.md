@@ -1,0 +1,4 @@
+StrategyFinder
+==============
+
+Funny
