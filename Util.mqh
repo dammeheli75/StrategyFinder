@@ -9,6 +9,9 @@
 //|                                                                  |
 //+------------------------------------------------------------------+
 #include <Object.mqh>
+#include <Arrays\ArrayInt.mqh>
+#include <Arrays\ArrayObj.mqh>
+#include "Position.mqh"
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
@@ -21,6 +24,8 @@ public:
                     ~Util(void);
    string            PeriodToString(int period);
    int               StringToPeriod(string StringPeriod);
+   int               SearchPosition(CArrayObj *positions,datetime from,datetime to);
+   datetime          SearchPosition(CArrayObj *positions,int from,int to);
   };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -136,5 +141,31 @@ int Util::StringToPeriod(string StringPeriod)
    if(StringPeriod=="W1") return(PERIOD_W1);
    if(StringPeriod=="MN1") return(PERIOD_MN1);
    else return(0);
+  }
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+int Util::SearchPosition(CArrayObj *positions,datetime from,datetime to)
+  {
+   for(int i=0;i<positions.Total();i++)
+     {
+      Position *position=positions.At(i);
+      if(position.GetTime()>=from && position.GetTime()<=to) return(i);
+     }
+   return(-1);
+  }
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+datetime Util::SearchPosition(CArrayObj *positions,int from,int to)
+  {
+   if(from<0 || from>positions.Total() || to<0 || to>positions.Total() || from>to) return(-1);
+
+   for(int i=from;i<=to;i++)
+     {
+      Position *position=positions.At(i);
+      return(position.GetTime());
+     }
+   return(-1);
   }
 //+------------------------------------------------------------------+
