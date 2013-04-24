@@ -17,7 +17,6 @@ class ZigZagPoint: public CObject
 protected:
    datetime          m_time;
    double            m_price;
-   int               m_spread;
    char              m_location;
 
 public:
@@ -27,8 +26,6 @@ public:
    datetime          GetTime(void);
    void              SetPrice(double price);
    double            GetPrice(void);
-   void              SetSpread(int spread);
-   int               GetSpread(void);
    void              SetTop(void);
    void              SetBottom(void);
    bool              IsTop(void);
@@ -74,20 +71,6 @@ ZigZagPoint::SetPrice(double price)
 double ZigZagPoint::GetPrice(void)
   {
    return(m_price);
-  }
-//+------------------------------------------------------------------+
-//|                                                                  |
-//+------------------------------------------------------------------+
-void ZigZagPoint::SetSpread(int spread)
-  {
-   m_spread=spread;
-  }
-//+------------------------------------------------------------------+
-//|                                                                  |
-//+------------------------------------------------------------------+
-int ZigZagPoint::GetSpread(void)
-  {
-   return(m_spread);
   }
 //+------------------------------------------------------------------+
 //|                                                                  |
