@@ -17,15 +17,19 @@ class HttpFile: public CObject
 protected:
    string            m_name;
    string            m_path;
+   string            m_path_escaped;
+   string            m_content_type;
 
 public:
                      HttpFile(void);
-                     HttpFile(string name,string path);
+                     HttpFile(string name,string path,string content_type="text/plain");
                     ~HttpFile(void);
+   void              ContentType(string content_type);
+   string            ContentType(void);
    void              Name(string name);
    string            Name(void);
    void              Path(string path);
-   string            Path(void);
+   string            Path(bool escapse=false);
   };
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -36,10 +40,11 @@ HttpFile::HttpFile(void)
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-HttpFile::HttpFile(string name,string path)
+HttpFile::HttpFile(string name,string path,string content_type="text/plain")
   {
    this.Name(name);
    this.Path(path);
+   this.ContentType(content_type);
   }
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -50,9 +55,26 @@ HttpFile::~HttpFile(void)
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
+void HttpFile::ContentType(string content_type)
+  {
+   if(StringLen(content_type)>0)
+      m_content_type=content_type;
+  }
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+string HttpFile::ContentType(void)
+  {
+   if(StringLen(m_content_type)<1) m_content_type="text/plain";
+   return(m_content_type);
+  }
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 void  HttpFile::Name(string name)
   {
-   m_name=name;
+   if(StringLen(name)>0)
+      m_name=name;
   }
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -69,13 +91,17 @@ string HttpFile::Name(void)
 void HttpFile::Path(string path)
   {
    m_path=path;
+   StringReplace(path,"\\","\\\\");
+   m_path_escaped=path;
   }
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-string HttpFile::Path(void)
+string HttpFile::Path(bool escape=false)
   {
    if(m_path==NULL) m_path="";
+   if(escape)
+      return(m_path_escaped);
 
    return(m_path);
   }

@@ -52,7 +52,8 @@ HttpHeader::~HttpHeader(void)
 //+------------------------------------------------------------------+
 void HttpHeader::Name(string name)
   {
-   m_name=name;
+   if(StringLen(name)>0)
+      m_name=name;
   }
 //+------------------------------------------------------------------+
 //|                                                                  |
